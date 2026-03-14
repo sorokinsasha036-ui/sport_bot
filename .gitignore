@@ -1,0 +1,11 @@
+
+# Віртуальне середовище
+.venv/
+
+# Логи
+*.log
+bot.log
+
+# Кеш Python
+__pycache__/
+*.pyc

@@ -1,0 +1,86 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Послуги{% endblock %}
+
+{% block content %}
+
+<div class="admin-page-header">
+
+    <div>
+        <h1>Послуги</h1>
+        <p>Керування послугами сайту.</p>
+    </div>
+
+    <a href="{{ url_for('admin_service_add') }}"
+       class="btn btn-primary">
+        + Додати послугу
+    </a>
+
+</div>
+
+
+<div class="admin-card">
+
+    {% if services %}
+
+        {% for service in services %}
+
+            <div class="admin-service-row">
+
+                <div>
+                    <h3>{{ service.name }}</h3>
+
+                    <p>
+                        {{ service.description }}
+                    </p>
+
+                    <span class="service-tech">
+                        {{ service.category }}
+                    </span>
+
+                    <p>
+                        <strong>{{ service.price }} ₴</strong>
+                    </p>
+                </div>
+
+
+                <div class="admin-actions">
+
+                    <a
+                        href="{{ url_for('admin_service_edit', service_id=service.id) }}"
+                        class="btn btn-secondary">
+                        Редагувати
+                    </a>
+
+                    <form
+                        method="POST"
+                        action="{{ url_for('admin_service_delete', service_id=service.id) }}"
+                        onsubmit="return confirm('Ви дійсно хочете видалити цю послугу?');">
+
+                        <button
+                            type="submit"
+                            class="btn btn-danger">
+                            Видалити
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            {% if not loop.last %}
+                <hr>
+            {% endif %}
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>Послуг поки немає.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

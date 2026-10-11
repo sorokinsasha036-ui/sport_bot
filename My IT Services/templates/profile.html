@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ title }} | My IT Services</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+<header class="header">
+    <div class="container header-container">
+
+        <a href="{{ url_for('index') }}" class="logo">
+            My <span>IT Services</span>
+        </a>
+
+        <nav class="nav">
+            <a href="{{ url_for('index') }}">Головна</a>
+            <a href="{{ url_for('about') }}">Про мене</a>
+            <a href="{{ url_for('services') }}">Послуги</a>
+            <a href="{{ url_for('my_requests') }}">Мої замовлення</a>
+            <a href="{{ url_for('profile') }}">Особистий кабінет</a>
+            <a href="{{ url_for('logout') }}">Вийти</a>
+        </nav>
+
+    </div>
+</header>
+
+<main class="container profile-page">
+
+    <section class="profile-heading">
+        <span class="profile-label">MY IT SERVICES</span>
+
+        <h1>Особистий кабінет</h1>
+
+        <p>
+            Вітаємо, {{ profile_user.username }}!
+            Тут зібрана інформація про твій профіль і замовлення.
+        </p>
+    </section>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- ІНФОРМАЦІЯ ПРО КОРИСТУВАЧА -->
+
+    <section class="profile-card profile-info">
+
+        <div class="profile-avatar">
+            {{ profile_user.username[0] | upper }}
+        </div>
+
+        <div class="profile-user-info">
+            <h2>{{ profile_user.username }}</h2>
+
+            <p>{{ profile_user.email }}</p>
+
+            <span class="profile-role">
+                {% if profile_user.role == "admin" %}
+                    Адміністратор
+                {% else %}
+                    Клієнт
+                {% endif %}
+            </span>
+        </div>
+
+    </section>
+
+    <!-- СТАТИСТИКА -->
+
+    <section class="profile-stats">
+
+        <article class="profile-stat">
+            <span class="profile-stat-icon">📋</span>
+            <p>Усього заявок</p>
+            <strong>{{ total_requests }}</strong>
+        </article>
+
+        <article class="profile-stat">
+            <span class="profile-stat-icon">🟡</span>
+            <p>Очікують розгляду</p>
+            <strong>{{ pending_requests }}</strong>
+        </article>
+
+        <article class="profile-stat">
+            <span class="profile-stat-icon">⚙️</span>
+            <p>Активні замовлення</p>
+            <strong>{{ active_requests }}</strong>
+        </article>
+
+        <article class="profile-stat">
+            <span class="profile-stat-icon">✅</span>
+            <p>Завершені</p>
+            <strong>{{ completed_requests }}</strong>
+        </article>
+
+    </section>
+
+    <!-- ОСТАННІ ЗАМОВЛЕННЯ -->
+
+    <section class="profile-card profile-orders">
+
+        <div class="profile-section-heading">
+            <div>
+                <h2>Останні замовлення</h2>
+                <p>Твої останні п'ять заявок.</p>
+            </div>
+
+            <a
+                href="{{ url_for('my_requests') }}"
+                class="profile-link"
+            >
+                Усі замовлення →
+            </a>
+        </div>
+
+        {% if recent_requests %}
+
+            <div class="profile-order-list">
+
+                {% for item in recent_requests %}
+
+                    <article class="profile-order">
+
+                        <div class="profile-order-main">
+
+                            <h3>{{ item.service.name }}</h3>
+
+                            <span>
+                                Замовлення #{{ item.id }}
+                            </span>
+
+                            <small>
+                                {{ item.created_at.strftime('%d.%m.%Y %H:%M')
+                                   if item.created_at else 'Дата невідома' }}
+                            </small>
+
+                        </div>
+
+                        <div class="profile-order-status">
+
+                            {% if item.status == "pending" %}
+                                <span class="status-pending">
+                                    Очікує розгляду
+                                </span>
+
+                            {% elif item.status == "accepted" %}
+                                <span class="status-active">
+                                    Прийнято
+                                </span>
+
+                            {% elif item.status == "in_progress" %}
+                                <span class="status-active">
+                                    У роботі
+                                </span>
+
+                            {% elif item.status == "completed" %}
+                                <span class="status-completed">
+                                    Завершено
+                                </span>
+
+                            {% elif item.status == "rejected" %}
+                                <span class="status-rejected">
+                                    Відхилено
+                                </span>
+
+                            {% elif item.status == "cancelled" %}
+                                <span class="status-cancelled">
+                                    Скасовано
+                                </span>
+
+                            {% else %}
+                                <span>{{ item.status }}</span>
+                            {% endif %}
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="profile-empty">
+                <div>📂</div>
+
+                <h3>Замовлень поки немає</h3>
+
+                <p>
+                    Переглянь послуги та створи першу заявку.
+                </p>
+
+                <a
+                    href="{{ url_for('services') }}"
+                    class="btn btn-primary"
+                >
+                    Переглянути послуги
+                </a>
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    <div class="container footer-bottom">
+        <p>© 2026 My IT Services. Усі права захищені.</p>
+    </div>
+</footer>
+
+</body>
+</html>

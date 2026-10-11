@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Адмін-панель{% endblock %} | My IT Services</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body class="admin-body">
+
+    <div class="admin-layout">
+
+        <aside class="admin-sidebar">
+
+            <a href="{{ url_for('admin_dashboard') }}" class="admin-logo">
+                My <span>IT Services</span>
+            </a>
+
+            <p class="admin-sidebar-label">АДМІНІСТРУВАННЯ</p>
+
+            <nav class="admin-nav">
+                <a href="{{ url_for('admin_dashboard') }}">🏠 Панель</a>
+                <a href="{{ url_for('admin_services') }}">🛠️ Послуги</a>
+                <a href="{{ url_for('admin_orders') }}">📦 Замовлення</a>
+                <a href="{{ url_for('admin_requests') }}">📩 Заявки</a>
+                <a href="{{ url_for('admin_users') }}">👥 Користувачі</a>
+                <a href="{{ url_for('admin_reviews') }}">⭐ Відгуки</a>
+                <a href="{{ url_for('index') }}">🌐 На сайт</a>
+                <a href="{{ url_for('logout') }}">🚪 Вийти</a>
+
+            </nav>
+
+        </aside>
+
+        <div class="admin-main">
+
+            <header class="admin-topbar">
+                <span>
+                    Адміністратор: {{ current_user.username }}
+                </span>
+
+            </header>
+
+            <main class="admin-content">
+                {% block content %}{% endblock %}
+            </main>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

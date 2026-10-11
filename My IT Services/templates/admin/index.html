@@ -1,0 +1,67 @@
+
+{% extends "admin/base.html" %}
+
+{% block title %}Головна{% endblock %}
+
+{% block content %}
+
+<div class="admin-page-header">
+    <div>
+        <h1>Адмін-панель</h1>
+        <p>Керування сайтом My IT Services.</p>
+    </div>
+</div>
+
+<div class="admin-grid">
+
+    <div class="admin-card">
+        <div class="admin-card-icon">💼</div>
+        <p>Усього послуг</p>
+        <div class="admin-number">{{ services_count }}</div>
+        <a href="{{ url_for('admin_services') }}">Керувати послугами →</a>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-icon">📁</div>
+        <p>Замовлення</p>
+        <div class="admin-number">{{ projects_count }}</div>
+        <a href="{{ url_for('admin_orders') }}">Керувати замовленнями →</a>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-icon">📋</div>
+        <p>Усього заявок</p>
+        <div class="admin-number">{{ requests_count }}</div>
+        <a href="{{ url_for('admin_requests') }}">Переглянути заявки →</a>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-icon">👥</div>
+        <p>Користувачі</p>
+        <div class="admin-number">{{ users_count }}</div>
+        <a href="{{ url_for('admin_users') }}">Керувати користувачами →</a>
+    </div>
+
+    
+    <div class="admin-card">
+        <div class="admin-card-icon">⭐</div>
+        <p>Відгуки клієнтів</p>
+        <div class="admin-number">{{ reviews_count }}</div>
+        <a href="{{ url_for('admin_reviews') }}">
+            Керувати відгуками →
+        </a>
+    </div>
+
+
+</div>
+
+<div class="admin-welcome">
+    <h2>Ласкаво просимо до панелі керування!</h2>
+    <p>
+        Тут ти зможеш додавати послуги, керувати проєктами,
+        переглядати заявки клієнтів та керувати користувачами.
+    </p>
+</div>
+
+{% endblock %}
+

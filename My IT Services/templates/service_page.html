@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html lang="uk">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ title }} | My IT Services</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container header-container">
+
+        <a href="{{ url_for('index') }}" class="logo">
+            My IT Services
+        </a>
+
+        <nav class="nav">
+
+            <a href="{{ url_for('index') }}">
+                Головна
+            </a>
+
+            <a href="{{ url_for('about') }}">
+                Про мене
+            </a>
+
+            <a href="{{ url_for('services') }}" class="active">
+                Послуги
+            </a>
+
+            <a href="{{ url_for('profile') }}">Особистий кабінет</a>
+
+            {% if current_user.is_authenticated %}
+
+                <a href="{{ url_for('my_requests') }}">
+                    Мої заявки
+                </a>
+
+                {% if current_user.role == "admin" %}
+                    <a href="{{ url_for('admin_dashboard') }}">
+                        Адмін-панель
+                    </a>
+                {% endif %}
+
+                <a href="{{ url_for('logout') }}">
+                    Вийти
+                </a>
+
+            {% else %}
+        
+
+                <a href="{{ url_for('login') }}">
+                    Вхід
+                </a>
+
+                <a href="{{ url_for('register') }}">
+                    Реєстрація
+                </a>
+
+            {% endif %}
+
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- Заголовок сторінки -->
+
+    <section class="page-header">
+
+        <div class="container">
+
+            <h1>
+                {{ service.name }}
+            </h1>
+
+            <p>
+                {{ service.description }}
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Основна інформація -->
+
+    <section class="service-detail">
+
+        <div class="container">
+
+            <div class="service-detail-content">
+
+
+                <div class="service-detail-main">
+
+                    <h2>
+                        Що входить у послугу?
+                    </h2>
+
+                    <p>
+                        {{ service.description }}
+                    </p>
+
+
+                    <h3>
+                        Категорія
+                    </h3>
+
+                    <div class="service-tech">
+                        {{ service.category }}
+                    </div>
+
+
+                    <h3>
+                        Що можна розробити
+                    </h3>
+
+                    <ul>
+
+                        <li>
+                            Індивідуальне IT-рішення
+                        </li>
+
+                        <li>
+                            Вебзастосунок або програму
+                        </li>
+
+                        <li>
+                            Backend та API
+                        </li>
+
+                        <li>
+                            Базу даних
+                        </li>
+
+                        <li>
+                            Автоматизацію процесів
+                        </li>
+
+                        <li>
+                            Інтеграцію необхідних сервісів
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <!-- Блок замовлення -->
+
+                <aside class="service-detail-sidebar">
+
+                    <h3>
+                        Вартість
+                    </h3>
+
+                    <div class="service-price">
+                        від {{ service.price }} ₴
+                    </div>
+
+                    <p>
+                        Точна вартість залежить від складності
+                        та кількості функцій проєкту.
+                    </p>
+
+
+                    {% if current_user.is_authenticated %}
+
+                        <a
+                            href="{{ url_for('create_request', service_id=service.id) }}"
+                            class="btn btn-primary">
+
+                            Замовити послугу
+
+                        </a>
+
+                    {% else %}
+
+                        <a
+                            href="{{ url_for('register') }}"
+                            class="btn btn-primary">
+
+                            Зареєструватися та замовити
+
+                        </a>
+
+                    {% endif %}
+
+                </aside>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Процес роботи -->
+
+    <section class="process-section">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <h2>
+                    Як проходить робота?
+                </h2>
+
+                <p>
+                    Від першого обговорення до готового проєкту.
+                </p>
+
+            </div>
+
+
+            <div class="process-grid">
+
+
+                <div class="process-card">
+
+                    <span>
+                        01
+                    </span>
+
+                    <h3>
+                        Обговорення
+                    </h3>
+
+                    <p>
+                        Визначаємо завдання, вимоги та необхідний функціонал.
+                    </p>
+
+                </div>
+
+
+                <div class="process-card">
+
+                    <span>
+                        02
+                    </span>
+
+                    <h3>
+                        Планування
+                    </h3>
+
+                    <p>
+                        Формуємо структуру проєкту та визначаємо технології.
+                    </p>
+
+                </div>
+
+
+                <div class="process-card">
+
+                    <span>
+                        03
+                    </span>
+
+                    <h3>
+                        Розробка
+                    </h3>
+
+                    <p>
+                        Створюю frontend, backend, базу даних
+                        та необхідний функціонал.
+                    </p>
+
+                </div>
+
+
+                <div class="process-card">
+
+                    <span>
+                        04
+                    </span>
+
+                    <h3>
+                        Запуск
+                    </h3>
+
+                    <p>
+                        Тестуємо проєкт, виправляємо помилки
+                        та готуємо його до запуску.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CTA -->
+
+    <section class="cta">
+
+        <div class="container">
+
+            <h2>
+                Маєте власне завдання?
+            </h2>
+
+            <p>
+                {% if current_user.is_authenticated %}
+                    Залиште заявку, і я зв'яжуся з вами для обговорення проєкту.
+                {% else %}
+                    Зареєструйтесь та залиште заявку на розробку.
+                {% endif %}
+            </p>
+
+
+            {% if current_user.is_authenticated %}
+
+                <a
+                    href="{{ url_for('create_request', service_id=service.id) }}"
+                    class="btn btn-primary">
+
+                    Залишити заявку
+
+                </a>
+
+            {% else %}
+
+                <a
+                    href="{{ url_for('register') }}"
+                    class="btn btn-primary">
+
+                    Зареєструватися
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-container">
+
+
+            <div class="footer-brand">
+
+                <h3>
+                    My IT Services
+                </h3>
+
+                <p>
+                    IT-рішення для ваших ідей та бізнесу.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <h4>
+                    Навігація
+                </h4>
+
+                <a href="{{ url_for('index') }}">
+                    Головна
+                </a>
+
+                <a href="{{ url_for('about') }}">
+                    Про мене
+                </a>
+
+                <a href="{{ url_for('services') }}">
+                    Послуги
+                </a>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <h4>
+                    Контакти
+                </h4>
+
+                <a
+                    href="https://t.me/soroka_sanya"
+                    target="_blank">
+
+                    Telegram
+
+                </a>
+
+                <a
+                    href="https://github.com/sorokinsasha036-ui"
+                    target="_blank">
+
+                    GitHub
+
+                </a>
+
+                <a
+                    href="https://mail.google.com/mail/u/0/?view=cm&fs=1&to=sorokinsasha036@gmail.com"
+                    target="_blank">
+
+                    Email
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 My IT Services. Усі права захищені.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+
+</html>

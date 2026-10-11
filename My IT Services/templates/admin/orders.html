@@ -1,0 +1,132 @@
+
+{% extends "admin/base.html" %}
+
+{% block title %}Замовлення{% endblock %}
+
+{% block content %}
+
+<div class="admin-page-header">
+    <div>
+        <h1>Замовлення</h1>
+        <p>Перегляд замовлень і керування їхніми статусами.</p>
+    </div>
+</div>
+
+<div class="admin-card">
+
+    {% if orders %}
+
+        {% for item in orders %}
+
+            <div class="admin-request-row">
+
+                <h3>
+                    {{ item.service.name }}
+                </h3>
+
+                <p>
+                    <strong>Номер замовлення:</strong>
+                    #{{ item.id }}
+                </p>
+
+                <p>
+                    <strong>Клієнт:</strong>
+                    {{ item.user.username }}
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    {{ item.user.email }}
+                </p>
+
+                <p>
+                    <strong>Опис:</strong>
+                    {{ item.description }}
+                </p>
+
+                <p>
+                    <strong>Дата створення:</strong>
+                    {{ item.created_at.strftime('%d.%m.%Y %H:%M')
+                       if item.created_at else 'Не вказано' }}
+                </p>
+
+                <p>
+                    <strong>Статус:</strong>
+
+                    {% if item.status == "pending" %}
+                        🟡 Очікує розгляду
+                    {% elif item.status == "accepted" %}
+                        🟢 Прийнято
+                    {% elif item.status == "rejected" %}
+                        🔴 Відхилено
+                    {% elif item.status == "in_progress" %}
+                        🔵 У роботі
+                    {% elif item.status == "completed" %}
+                        🟣 Завершено
+                    {% else %}
+                        {{ item.status }}
+                    {% endif %}
+                </p>
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'admin_order_update_status',
+                        request_id=item.id
+                    ) }}"
+                >
+
+                    <label for="status-{{ item.id }}">
+                        Змінити статус:
+                    </label>
+
+                    <select
+                        name="status"
+                        id="status-{{ item.id }}"
+                        required
+                    >
+                        <option
+                            value="accepted"
+                            {% if item.status == "accepted" %}selected{% endif %}
+                        >
+                            Прийнято
+                        </option>
+
+                        <option
+                            value="in_progress"
+                            {% if item.status == "in_progress" %}selected{% endif %}
+                        >
+                            У роботі
+                        </option>
+
+                        <option
+                            value="completed"
+                            {% if item.status == "completed" %}selected{% endif %}
+                        >
+                            Завершено
+                        </option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">
+                        Зберегти статус
+                    </button>
+
+                </form>
+
+            </div>
+
+            {% if not loop.last %}
+                <hr>
+            {% endif %}
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>Поки що немає прийнятих замовлень.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

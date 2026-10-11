@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ title }} | My IT Services</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="container header-container">
+
+            <a href="{{ url_for('index') }}" class="logo">
+                My <span>IT Services</span>
+            </a>
+
+            <nav class="nav">
+
+                <a href="{{ url_for('index') }}">Головна</a>
+                <a href="{{ url_for('about') }}">Про мене</a>
+                <a href="{{ url_for('services') }}">Послуги</a>
+
+                {% if current_user.is_authenticated %}
+
+                    <a href="{{ url_for('my_requests') }}">
+                        Мої замовлення
+                    </a>
+
+                    {% if current_user.role == "admin" %}
+                        <a href="{{ url_for('admin_dashboard') }}">
+                            Адмін-панель
+                        </a>
+                    {% endif %}
+                    
+                    <a href="{{ url_for('profile') }}">
+                        Особистий кабінет
+                    </a>
+
+                    <a href="{{ url_for('logout') }}">Вийти</a>
+
+                {% else %}
+
+                    <a href="{{ url_for('login') }}">Вхід</a>
+
+                    <a href="{{ url_for('register') }}" class="btn btn-primary">
+                        Реєстрація
+                    </a>
+
+                {% endif %}
+
+                
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- ОСНОВНИЙ ВМІСТ -->
+
+    <main>
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <div class="container">
+
+                <div class="hero-content">
+
+                    <h1>
+                        IT-рішення для ваших
+                        <span>ідей та бізнесу</span>
+                    </h1>
+
+                    <p>
+                        Розробка цифрових продуктів, автоматизація
+                        процесів та індивідуальні IT-рішення під ваші завдання.
+                    </p>
+
+                    <div class="hero-buttons">
+
+                        <a
+                            href="{{ url_for('services') }}"
+                            class="btn btn-primary"
+                        >
+                            Переглянути послуги
+                        </a>
+
+                        <a
+                            href="#contact"
+                            class="btn btn-secondary"
+                        >
+                            Замовити проєкт
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ОСНОВНІ ПОСЛУГИ -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-header">
+
+                    <h2>Основні послуги</h2>
+
+                    <p>
+                        Розробка та впровадження IT-рішень
+                        для різних завдань.
+                    </p>
+
+                </div>
+
+                <div class="services-grid">
+
+                    {% for service in services %}
+
+                        <div class="service-card">
+
+                            <div class="card-icon">
+                                💻
+                            </div>
+
+                            <h3>{{ service.name }}</h3>
+
+                            <p>{{ service.description }}</p>
+
+                            <div class="service-tech">
+                                {{ service.category }}
+                            </div>
+
+                            <div class="service-price">
+                                від {{ service.price }} ₴
+                            </div>
+
+                            <a
+                                href="{{ url_for('service_page', service_id=service.id) }}"
+                                class="btn btn-primary"
+                            >
+                                Детальніше
+                            </a>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ЧОМУ ЗАМОВЛЯЮТЬ У МЕНЕ -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-header">
+
+                    <h2>Чому замовляють у мене</h2>
+
+                    <p>
+                        Підхід до розробки, орієнтований
+                        на конкретні завдання клієнта.
+                    </p>
+
+                </div>
+
+                <div class="advantages">
+
+                    <div class="advantage">
+
+                        <h3>Індивідуальний підхід</h3>
+
+                        <p>
+                            Рішення створюються відповідно
+                            до потреб конкретного проєкту.
+                        </p>
+
+                    </div>
+
+                    <div class="advantage">
+
+                        <h3>Сучасні технології</h3>
+
+                        <p>
+                            Використання сучасних інструментів
+                            та технологій розробки.
+                        </p>
+
+                    </div>
+
+                    <div class="advantage">
+
+                        <h3>Прозорий процес</h3>
+
+                        <p>
+                            Зрозумілі етапи роботи від обговорення
+                            завдання до готового продукту.
+                        </p>
+
+                    </div>
+
+                    <div class="advantage">
+
+                        <h3>Підтримка</h3>
+
+                        <p>
+                            Можливість подальшого розвитку
+                            та доопрацювання проєкту.
+                        </p>
+
+                    </div>
+
+                    <div class="advantage">
+
+                        <h3>Гнучкість</h3>
+
+                        <p>
+                            Можливість адаптувати рішення
+                            під зміну вимог та завдань.
+                        </p>
+
+                    </div>
+
+                    <div class="advantage">
+
+                        <h3>Орієнтація на результат</h3>
+
+                        <p>
+                            Основна мета — створити рішення,
+                            яке реально виконує поставлені задачі.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ЯК Я ПРАЦЮЮ -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-header">
+
+                    <h2>Як я працюю</h2>
+
+                    <p>
+                        Простий процес від першої заявки
+                        до готового проєкту.
+                    </p>
+
+                </div>
+
+                <div class="process">
+
+                    <div class="process-item">
+
+                        <div class="process-number">1</div>
+
+                        <h3>Заявка</h3>
+
+                        <p>
+                            Ви описуєте своє завдання.
+                        </p>
+
+                    </div>
+
+                    <div class="process-item">
+
+                        <div class="process-number">2</div>
+
+                        <h3>Обговорення</h3>
+
+                        <p>
+                            Уточнюємо вимоги та можливості.
+                        </p>
+
+                    </div>
+
+                    <div class="process-item">
+
+                        <div class="process-number">3</div>
+
+                        <h3>Розробка</h3>
+
+                        <p>
+                            Створюю необхідне рішення.
+                        </p>
+
+                    </div>
+
+                    <div class="process-item">
+
+                        <div class="process-number">4</div>
+
+                        <h3>Тестування</h3>
+
+                        <p>
+                            Перевіряю роботу проєкту.
+                        </p>
+
+                    </div>
+
+                    <div class="process-item">
+
+                        <div class="process-number">5</div>
+
+                        <h3>Результат</h3>
+
+                        <p>
+                            Передаю готовий проєкт.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ВІДГУКИ КЛІЄНТІВ -->
+
+        <section class="testimonials-section">
+
+            <div class="container">
+
+                <div class="testimonials-header">
+
+                    <span class="testimonials-label">
+                        ВІДГУКИ КЛІЄНТІВ
+                    </span>
+
+                    <h2>Що говорять про мою роботу</h2>
+
+                    <p>
+                        Думки клієнтів, які вже скористалися моїми послугами.
+                    </p>
+
+                </div>
+
+                {% if reviews %}
+
+                    <div class="testimonials-grid">
+
+                        {% for review in reviews %}
+
+                            <article class="testimonial-card">
+
+                                <!-- КЛІЄНТ -->
+
+                                <div class="testimonial-top">
+
+                                    <div class="testimonial-avatar">
+                                        {{ review.user.username[0] | upper }}
+                                    </div>
+
+                                    <div class="testimonial-user">
+
+                                        <h3>
+                                            {{ review.user.username }}
+                                        </h3>
+
+                                        <span class="testimonial-service">
+                                            {{ review.request.service.name }}
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ОЦІНКА -->
+
+                                <div
+                                    class="testimonial-stars"
+                                    aria-label="Оцінка: {{ review.rating }} з 5"
+                                >
+
+                                    {% for star in range(review.rating) %}
+                                        <span>★</span>
+                                    {% endfor %}
+
+                                    {% for star in range(5 - review.rating) %}
+                                        <span class="empty-star">★</span>
+                                    {% endfor %}
+
+                                </div>
+
+
+                                <!-- ТЕКСТ ВІДГУКУ -->
+
+                                <p class="testimonial-comment">
+                                    {{ review.comment }}
+                                </p>
+
+
+                                <!-- ДАТА ТА СТАТУС -->
+
+                                <div class="testimonial-footer">
+
+                                    <span>
+                                        ✓ Перевірений відгук
+                                    </span>
+
+                                    <time
+                                        datetime="{{ review.created_at.strftime('%Y-%m-%d') }}"
+                                    >
+                                        {{ review.created_at.strftime('%d.%m.%Y') }}
+                                    </time>
+
+                                </div>
+
+                            </article>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <!-- ЯКЩО ВІДГУКІВ ПОКИ НЕМАЄ -->
+
+                    <div class="testimonials-empty">
+
+                        <div class="testimonials-empty-icon">
+                            ✦
+                        </div>
+
+                        <h3>
+                            Ваш відгук може бути першим!
+                        </h3>
+
+                        <p>
+                            Відгуки клієнтів допомагають мені
+                            ставати кращим.
+                        </p>
+
+                        <a href="{{ url_for('services') }}">
+                            Переглянути послуги →
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer" id="contact">
+
+        <div class="container footer-container">
+
+            <div>
+
+                <h3>My IT Services</h3>
+
+                <p>
+                    IT-рішення для ваших ідей та бізнесу.
+                </p>
+
+            </div>
+
+
+            <!-- НАВІГАЦІЯ -->
+
+            <div>
+
+                <h3>Навігація</h3>
+
+                <div class="footer-links">
+
+                    <a href="{{ url_for('index') }}">
+                        Головна
+                    </a>
+
+                    <a href="{{ url_for('about') }}">
+                        Про мене
+                    </a>
+
+                    <a href="{{ url_for('services') }}">
+                        Послуги
+                    </a>
+
+                    <a href="{{ url_for('login') }}">
+                        Вхід
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- КОНТАКТИ -->
+
+            <div>
+
+                <h3>Контакти</h3>
+
+                <div class="footer-links">
+
+                    <a
+                        href="https://t.me/soroka_sanya"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Telegram
+                    </a>
+
+                    <a
+                        href="https://github.com/sorokinsasha036-ui"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        GitHub
+                    </a>
+
+                    <a href="https://mail.google.com/mail/u/0/?view=cm&fs=1&to=sorokinsasha036@gmail.com">
+                        Email
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- КОПІРАЙТ -->
+
+        <div class="footer-bottom">
+
+            <div class="container">
+
+                <p>
+                    © 2026 My IT Services. Усі права захищені.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

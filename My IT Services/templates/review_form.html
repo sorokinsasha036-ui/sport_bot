@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Залишити відгук | My IT Services</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar">
+
+        <a href="{{ url_for('index') }}" class="logo">
+            My <span>IT Services</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Головна</a>
+            <a href="{{ url_for('about') }}">Про мене</a>
+            <a href="{{ url_for('services') }}">Послуги</a>
+            <a href="{{ url_for('my_requests') }}">Мої замовлення</a>
+            <a href="{{ url_for('logout') }}">Вийти</a>
+        </div>
+
+    </nav>
+</header>
+
+<main class="container">
+
+    <h1>Залишити відгук</h1>
+
+    <div class="admin-card">
+
+        <h2>{{ order.service.name }}</h2>
+
+        <p>
+            <strong>Номер замовлення:</strong>
+            #{{ order.id }}
+        </p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+
+            <label for="rating">
+                Ваша оцінка:
+            </label>
+
+            <select id="rating" name="rating" required>
+                <option value="">Оберіть оцінку</option>
+                <option value="5">★★★★★ — 5 зірок</option>
+                <option value="4">★★★★ — 4 зірки</option>
+                <option value="3">★★★ — 3 зірки</option>
+                <option value="2">★★ — 2 зірки</option>
+                <option value="1">★ — 1 зірка</option>
+            </select>
+
+            <br><br>
+
+            <label for="comment">
+                Ваш коментар:
+            </label>
+
+            <textarea
+                id="comment"
+                name="comment"
+                maxlength="2000"
+                rows="6"
+                placeholder="Розкажіть про свій досвід..."
+                required
+            ></textarea>
+
+            <br><br>
+
+            <button type="submit">
+                Надіслати відгук
+            </button>
+
+        </form>
+
+        <br>
+
+        <a href="{{ url_for('my_requests') }}">
+            ← Повернутися до замовлень
+        </a>
+
+    </div>
+
+</main>
+
+</body>
+</html>

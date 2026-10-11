@@ -1,0 +1,64 @@
+
+
+{% extends "admin/base.html" %}
+
+{% block title %}Відгуки{% endblock %}
+
+{% block content %}
+<h1>Керування відгуками</h1>
+
+{% if reviews %}
+    {% for review in reviews %}
+        <article class="review-card">
+            <h3>{{ review.user.username }}</h3>
+
+            <p>
+                Послуга: {{ review.request.service.name }}
+            </p>
+
+            <p>
+                Оцінка:
+                {% for star in range(review.rating) %}★{% endfor %}
+                {% for star in range(5 - review.rating) %}☆{% endfor %}
+                ({{ review.rating }}/5)
+            </p>
+
+            <p>{{ review.comment }}</p>
+
+            <small>
+                {{ review.created_at.strftime("%d.%m.%Y %H:%M") }}
+            </small>
+
+            <p>
+                Статус:
+                {% if review.is_published %}
+                    Опубліковано
+                {% else %}
+                    Очікує публікації
+                {% endif %}
+            </p>
+
+            {% if review.is_published %}
+                <form
+                    method="POST"
+                    action="{{ url_for('admin_review_hide', review_id=review.id) }}"
+                >
+                    <button type="submit">Приховати</button>
+                </form>
+            {% else %}
+                <form
+                    method="POST"
+                    action="{{ url_for('admin_review_publish', review_id=review.id) }}"
+                >
+                    <button type="submit">Опублікувати</button>
+                </form>
+            {% endif %}
+        </article>
+
+        <hr>
+    {% endfor %}
+{% else %}
+    <p>Відгуків поки немає.</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Заявки{% endblock %}
+
+{% block content %}
+
+<div class="admin-page-header">
+    <div>
+        <h1>Заявки</h1>
+        <p>Керування заявками користувачів.</p>
+    </div>
+</div>
+
+<div class="admin-card">
+
+    {% if requests %}
+
+        {% for item in requests %}
+
+            <div class="admin-request-row">
+
+                <h3>
+                    {{ item.service.name }}
+                </h3>
+
+                <p>
+                    <strong>Користувач:</strong>
+                    {{ item.user.username }}
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    {{ item.user.email }}
+                </p>
+
+                <p>
+                    <strong>Опис:</strong>
+                    {{ item.description }}
+                </p>
+
+                <p>
+                    <strong>Статус:</strong>
+
+                    {% if item.status == "pending" %}
+                        🟡 Очікує розгляду
+
+                    {% elif item.status == "accepted" %}
+                        🟢 Прийнято
+
+                    {% elif item.status == "rejected" %}
+                        🔴 Відхилено
+
+                    {% elif item.status == "completed" %}
+                        🔵 Завершено
+                    {% endif %}
+                </p>
+
+
+                {% if item.status == "pending" %}
+
+                    <div class="admin-actions">
+
+                        <form method="POST"
+                              action="{{ url_for('admin_request_accept', request_id=item.id) }}">
+
+                            <button type="submit" class="btn btn-primary">
+                                Прийняти
+                            </button>
+
+                        </form>
+
+
+                        <form method="POST"
+                              action="{{ url_for('admin_request_reject', request_id=item.id) }}">
+
+                            <button type="submit" class="btn btn-danger">
+                                Відхилити
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            {% if not loop.last %}
+                <hr>
+            {% endif %}
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>Заявок поки немає.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
